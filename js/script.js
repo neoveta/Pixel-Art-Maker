@@ -1,33 +1,26 @@
-    var table = document.getElementById("pixel_canvas");
-    var sub = document.getElementById("input_submit");
-    
-    // Add click listener to submit button
-    sub.addEventListener('click', function (evt) {
-        evt.preventDefault();
-        makeGrid();
-    });
-    
-    // When size is submitted by the user, call makeGrid()
-    function makeGrid() {
-    
-        table.innerHTML = '';
-        // Get height and width of the table
-        var h = document.getElementById("input_height").value;
-        var w = document.getElementById("input_width").value;
-        // Get the value of the color we have to put on click
-        var color = document.getElementById("colorPicker");
-        var addColor = function (cell) {
-            // Put the selected color on click
-            cell.addEventListener('click', function () {
-                cell.style.backgroundColor = color.value;
-            });
-        };
-        
-        for (var i = 0; i < h; i++) {
-            var row = table.insertRow(i);
-            for (var j = 0; j < w; j++) {
-                var cell = row.insertCell(j);
-                cell.addEventListener('click', addColor(cell));
-            }
-        }
-    }
+//function loads after html
+$(function(){
+
+   function makeGrid() {    //set variables inside makeGrid
+     const height=$('#input_height').val();
+     const width=$('#input_width').val();
+     const table=$('#pixel_canvas');
+     const colour=$('#colorPicker');
+     table.children().remove(); //removes grid created previously
+     for (let r=0; r<height; r++) {  //loops for creating grid
+       table.append('<tr></tr>');
+       for (let c=0; c<width; c++) {
+         $('tr').last().append('<td></td>'); //adds new cells to last rows
+       }
+     }
+
+     table.on('click', 'td', function(){  //listens to clicks on created table and colour
+         $(this).css('background-color', colour.val());
+     });
+   }
+
+   $("#button").click(function(evt) { //calls the function makeGrid
+     evt.preventDefault();  //prevents reloading page with submit button
+     makeGrid();
+   });
+   });
